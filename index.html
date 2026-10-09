@@ -376,11 +376,18 @@ var uid8=function(){return Date.now().toString(36)+Math.random().toString(36).sl
 /* ---------- penyimpanan: lokal dulu, server Google Sheet bila link diisi ---------- */
 var SRV=function(){return String(S.settings.server||'').trim()};
 function persist(){try{localStorage.setItem(LS+'entries',JSON.stringify(S.entries))}catch(e){toast('Penyimpanan perangkat penuh. Aktifkan server atau hapus foto lama.')}}
+function srvBody(p){return Object.assign({owner:S.settings.name||'',key:S.settings.key||''},p)}
 async function srv(p){
   if(!SRV())throw new Error('Link server kosong');
-  var r=await fetch(SRV(),{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({owner:S.settings.name||'',key:S.settings.key||''},p))});
-  var j=await r.json();if(!j.ok)throw new Error(j.error||'Server error');return j;
+  var r=await fetch(SRV()+(SRV().indexOf('?')<0?'?':'&')+'p='+encodeURIComponent(JSON.stringify(srvBody(p))),{redirect:'follow'});
+  var j;try{j=await r.json()}catch(x){throw new Error('Server tidak membalas JSON. Pastikan Web App di-deploy dengan akses "Anyone" dan memakai versi Code.gs terbaru.')}
+  if(!j.ok)throw new Error(j.error||'Server error');return j;
 }
+async function srvPost(p){
+  if(!SRV())throw new Error('Link server kosong');
+  await fetch(SRV(),{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(srvBody(p))});
+}
+function srvHint(x){var m=String(x&&x.message||x);return /Load failed|Failed to fetch|NetworkError/i.test(m)?'tidak bisa menjangkau server. Cek link /exec dan pastikan akses Web App "Anyone"':m}
 async function initStore(){
   S.mode='local';S.entries=lsGet('entries',[]);Object.assign(S.settings,lsGet('settings',{}));
   applyPrefs();S.ready=true;refresh();
@@ -397,10 +404,12 @@ async function initExtras(){
 async function push(e){
   S.sync='busy';renderTop();
   try{
-    var j=await srv({action:'upsert',entry:e});
-    S.entries=S.entries.map(function(x){return x.id===e.id?Object.assign({},x,j.entry||{},{sync:true}):x});
+    await srvPost({action:'upsert',entry:e});
+    var j=await srv({action:'list'}),r=(j.entries||[]).find(function(x){return x.id===e.id});
+    if(!r)throw new Error('Data belum diterima server. Cek deployment Code.gs.');
+    S.entries=S.entries.map(function(x){return x.id===e.id?Object.assign({},x,{evidence:r.evidence,updatedAt:r.updatedAt||x.updatedAt,sync:true}):x});
     persist();S.sync='ok';refresh();
-  }catch(x){S.sync='err';S.syncErr=x.message;renderTop()}
+  }catch(x){S.sync='err';S.syncErr=srvHint(x);renderTop()}
 }
 async function pull(){
   if(!SRV())return;
@@ -413,7 +422,7 @@ async function pull(){
     S.entries=Object.keys(map).map(function(k){return map[k]});persist();S.sync='ok';refresh();
     var pend=S.entries.filter(function(e){return !e.sync});
     for(var i=0;i<pend.length;i++)await push(pend[i]);
-  }catch(x){S.sync='err';S.syncErr=x.message;renderTop()}
+  }catch(x){S.sync='err';S.syncErr=srvHint(x);renderTop()}
 }
 async function saveEntry(data,id){
   id=id||uid8();var e=Object.assign({},data,{id:id,updatedAt:Date.now()});
@@ -1275,7 +1284,7 @@ function vPengaturan(){
     h('div',{class:'grid'},idField('Link server (Google Sheet)','s-srv','server','https://script.google.com/macros/s/…/exec','full'),idField('Kode akses (opsional)','s-key','key','','full')),
     h('div',{class:'row',style:'margin-top:12px'},h('button',{class:'btn primary',type:'button',onclick:async function(){
       if(!SRV()){toast('Isi link server dulu.');return}
-      try{await srv({action:'ping'});toast('Terhubung');pull()}catch(x){toast('Gagal terhubung: '+x.message)}}},'Tes koneksi & sinkronkan')));
+      try{await srv({action:'ping'});toast('Terhubung');pull()}catch(x){toast('Gagal terhubung: '+srvHint(x))}}},'Tes koneksi & sinkronkan')));
   var chips=h('div',{class:'chips'},types.map(function(t){
     return h('span',{class:'chip',style:'--tc:var(--c'+typeColor(t)+')'},h('i'),t,
       h('button',{type:'button','aria-label':'Hapus jenis '+t,onclick:function(){
@@ -1317,7 +1326,7 @@ function vPengaturan(){
 var VIEWS={harian:vHarian,minggu:vMinggu,bulan:vBulan,tindak:vTindak,laporan:vLaporan,pengaturan:vPengaturan};
 function renderTop(){
   var s=$('sync'),has=!!SRV(),k=S.sync;
-  var msg=!S.ready?'Memuat…':!has?'Tersimpan di peramban ini saja':k==='busy'?'Menyinkronkan…':k==='err'?'Gagal sinkron, data aman di perangkat':'Tersinkron ke server';
+  var msg=!S.ready?'Memuat…':!has?'Tersimpan di peramban ini saja':k==='busy'?'Menyinkronkan…':k==='err'?'Gagal sinkron, data aman di perangkat'+(S.syncErr?' ('+S.syncErr+')':''):'Tersinkron ke server';
   s.className='sync'+(has&&k!=='err'?'':' warn');
   s.replaceChildren(h('i'),msg);
   var br=document.querySelector('.brand');br.replaceChildren(h('small',null,'Catatan kunjungan toko'),T('Jurnal Trainer Lapangan'));
