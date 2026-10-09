@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="id"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#2250D9">
+<title>Jurnal Trainer Executive</title>
+<meta name="theme-color" content="#0A84FF">
 <style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
-<title>Jurnal Trainer Lapangan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -240,11 +240,50 @@ textarea{resize:vertical}
 .ph img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:1cqw;display:block}.ph figcaption{font-size:1.1cqw;color:#9AA8C2;margin-top:.3cqw}
 .fl{display:flex;gap:1.2cqw;padding:1cqw 0;border-bottom:1px solid #2A3B5F}.fl b{color:#D4AF37}.fl small{display:block;color:#9AA8C2}
 .sl .pg{position:absolute;right:3cqw;bottom:1.6cqw;font-size:1.1cqw;color:#9AA8C2}
+:root{--bg:#DCE6F8;--surface:rgba(255,255,255,.55);--surface-2:rgba(255,255,255,.42);--ink:#0B1220;--ink-2:#4A5470;--line:rgba(110,125,165,.22);--accent:#007AFF;--accent-ink:#fff;--accent-soft:rgba(0,122,255,.14);--hl:#FFD60A;--good:#1FAF4B;--warn:#E07B00;--bad:#E5342B;--c1:#007AFF;--c2:#30B0C7;--c3:#FF9500;--c4:#AF52DE;--c5:#E0B400;--c6:#8E8E93;--c7:#FF2D55;--glass:rgba(255,255,255,.5);--glass-hi:rgba(255,255,255,.9);--glass-strong:rgba(250,252,255,.78);--glass-in:rgba(255,255,255,.55);--glass-brd:rgba(255,255,255,.7);--glass-sh:0 10px 36px rgba(40,55,110,.14);--b1:rgba(120,170,255,.85);--b2:rgba(255,170,210,.75);--b3:rgba(140,235,210,.75);--b4:rgba(190,170,255,.8);color-scheme:light;--font-display:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',system-ui,sans-serif;--font-body:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',system-ui,sans-serif;--font-mono:ui-rounded,'SF Pro Rounded',-apple-system,system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#060913;--surface:rgba(30,36,56,.5);--surface-2:rgba(255,255,255,.08);--ink:#F4F6FB;--ink-2:#A5AEC6;--line:rgba(255,255,255,.12);--accent:#0A84FF;--accent-ink:#fff;--accent-soft:rgba(10,132,255,.22);--hl:#FFD60A;--good:#30D158;--warn:#FF9F0A;--bad:#FF453A;--c1:#0A84FF;--c2:#40C8E0;--c3:#FF9F0A;--c4:#BF5AF2;--c5:#FFD60A;--c6:#98989D;--c7:#FF375F;--glass:rgba(34,40,62,.5);--glass-hi:rgba(255,255,255,.18);--glass-strong:rgba(24,28,46,.78);--glass-in:rgba(255,255,255,.07);--glass-brd:rgba(255,255,255,.14);--glass-sh:0 12px 40px rgba(0,0,0,.45);--b1:rgba(40,90,255,.55);--b2:rgba(170,60,230,.4);--b3:rgba(0,170,170,.33);--b4:rgba(255,80,120,.25);color-scheme:dark;}}
+:root[data-theme="dark"]{--bg:#060913;--surface:rgba(30,36,56,.5);--surface-2:rgba(255,255,255,.08);--ink:#F4F6FB;--ink-2:#A5AEC6;--line:rgba(255,255,255,.12);--accent:#0A84FF;--accent-ink:#fff;--accent-soft:rgba(10,132,255,.22);--hl:#FFD60A;--good:#30D158;--warn:#FF9F0A;--bad:#FF453A;--c1:#0A84FF;--c2:#40C8E0;--c3:#FF9F0A;--c4:#BF5AF2;--c5:#FFD60A;--c6:#98989D;--c7:#FF375F;--glass:rgba(34,40,62,.5);--glass-hi:rgba(255,255,255,.18);--glass-strong:rgba(24,28,46,.78);--glass-in:rgba(255,255,255,.07);--glass-brd:rgba(255,255,255,.14);--glass-sh:0 12px 40px rgba(0,0,0,.45);--b1:rgba(40,90,255,.55);--b2:rgba(170,60,230,.4);--b3:rgba(0,170,170,.33);--b4:rgba(255,80,120,.25);color-scheme:dark;}
+/* ===== Liquid glass ===== */
+body{background:var(--bg);min-height:100vh;font-size:16px;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:-20vmax;z-index:-1;pointer-events:none;background:radial-gradient(40vmax 40vmax at 14% 10%,var(--b1),transparent 62%),radial-gradient(46vmax 46vmax at 92% 18%,var(--b2),transparent 62%),radial-gradient(52vmax 52vmax at 72% 96%,var(--b3),transparent 62%),radial-gradient(42vmax 42vmax at 4% 88%,var(--b4),transparent 62%);animation:drift 30s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate3d(2.5vmax,-2vmax,0) scale(1.07)}}
+.panel,.note,.day,.cell,.stats,.fu,.sync,.tabs,.clock,.seg,.chip,.cd{background:var(--glass);-webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);border:1px solid var(--glass-brd);box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -1px 0 rgba(255,255,255,.06),var(--glass-sh)}
+.panel{border-radius:26px;padding:4px 18px}.panel.pad{padding:18px}
+.note{border-radius:20px;border:1px solid var(--glass-brd)}.note.warn{background:color-mix(in srgb,var(--warn) 22%,var(--glass))}
+.stats{border-radius:24px;gap:0;overflow:hidden}.stat{background:transparent;box-shadow:inset 0 0 0 .5px var(--line)}
+.fu{border-radius:16px;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--surface-2)}
+.day{border-radius:18px}.cell{border-radius:14px;box-shadow:none}.chip{box-shadow:none}
+.top{margin-bottom:14px}.brand{font-weight:800;font-size:1.7rem;letter-spacing:-.02em}.brand small{letter-spacing:.12em}
+.sync{padding:7px 14px;border-radius:999px;box-shadow:none}
+.tabs{position:sticky;top:calc(8px + env(safe-area-inset-top,0px));z-index:15;border-radius:999px;padding:5px;gap:2px;margin-bottom:18px;border-bottom:1px solid var(--glass-brd)}
+.tab{border:0;border-radius:999px;padding:9px 16px;transition:background .25s,color .25s}
+.tab[aria-selected=true]{background:var(--glass-hi);color:var(--ink);box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 3px 12px rgba(30,40,90,.16)}
+.btn{background:var(--glass);border:1px solid var(--glass-brd);border-radius:999px;padding:10px 18px;-webkit-backdrop-filter:blur(20px) saturate(170%);backdrop-filter:blur(20px) saturate(170%);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 2px 10px rgba(30,40,90,.1);transition:transform .2s cubic-bezier(.2,.8,.2,1),background .2s}
+.btn:hover{border-color:var(--glass-brd);background:var(--glass-hi)}.btn:active{transform:scale(.96)}
+.btn.primary,.fab{background:linear-gradient(180deg,rgba(255,255,255,.3),rgba(255,255,255,0) 55%),var(--accent);color:#fff;border:1px solid rgba(255,255,255,.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 8px 22px color-mix(in srgb,var(--accent) 45%,transparent)}
+.btn.tint{background:var(--accent-soft);color:var(--accent);border-color:transparent;box-shadow:none}.btn.ghost{background:transparent;box-shadow:none;border-color:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
+.fab{padding:15px 24px;font-weight:700;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.seg{border-radius:999px;padding:3px;overflow:visible}.seg button{border-radius:999px;transition:background .25s}
+.seg button[aria-pressed=true]{background:var(--glass-hi);color:var(--ink);box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 2px 10px rgba(30,40,90,.16)}
+.day[aria-pressed=true]{background:linear-gradient(180deg,rgba(255,255,255,.3),transparent 55%),var(--accent);border-color:rgba(255,255,255,.4)}
+input,select,textarea{background:var(--glass-in);border:1px solid var(--glass-brd);border-radius:16px;box-shadow:inset 0 1px 2px rgba(30,40,90,.08)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.overlay{background:rgba(10,14,30,.32);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.sheet{background:var(--glass-strong);-webkit-backdrop-filter:blur(44px) saturate(190%);backdrop-filter:blur(44px) saturate(190%);border:1px solid var(--glass-brd);border-radius:32px 32px 0 0;box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 -10px 50px rgba(20,30,80,.25)}
+@media (min-width:700px){.sheet{border-radius:32px}}
+.aibox{border-radius:18px}.toast{background:var(--glass-strong);color:var(--ink);border:1px solid var(--glass-brd);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);box-shadow:var(--glass-sh)}
+.pill{background:var(--hl);border-radius:999px}.track{border-radius:99px}.fill{border-radius:99px;background:linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--accent) 60%,#fff))}
+.col .b{border-radius:10px 10px 4px 4px;background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 70%,#fff),var(--accent))}
+.evth img,.evt img,.evgal img{border-radius:14px}
+.clock{display:flex;align-items:center;justify-content:space-between;gap:10px 20px;flex-wrap:wrap;padding:18px 22px;border-radius:30px;margin-bottom:16px}
+.clk-t{font:700 2.6rem/1 var(--font-display);font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+.clk-d{margin-top:6px;color:var(--ink-2);font-weight:500}.clk-z{font:600 .7rem var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);padding:6px 12px;border-radius:999px;background:var(--surface-2)}
+@media (prefers-reduced-transparency:reduce){:root{--glass:var(--bg);--glass-strong:var(--bg)}*{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}}
 </style>
 
 <div class="app">
   <header class="top">
-    <div class="brand"><small>Catatan kunjungan toko</small>Jurnal Trainer Lapangan</div>
+    <div class="brand"><small>Catatan kunjungan toko</small>Jurnal Trainer Executive</div>
     <div class="sync" id="sync"><i></i>Memuat…</div>
   </header>
   <nav class="tabs" id="tabs" role="tablist" aria-label="Tampilan"></nav>
@@ -301,7 +340,7 @@ var cmp=function(a,b){
 var clip=function(s,n){return String(s||'').replace(/\s+/g,' ').slice(0,n||280)};
 
 var LANG='id',LOC='id-ID';
-var EN={'Catatan kunjungan toko':'Store visit log','Jurnal Trainer Lapangan':'Field Trainer Journal','Memuat…':'Loading…','Memuat catatan…':'Loading entries…',
+var EN={'Catatan kunjungan toko':'Store visit log','Jurnal Trainer Executive':'Executive Trainer Journal','Edit aktivitas':'Edit activity','Memuat…':'Loading…','Memuat catatan…':'Loading entries…',
 'Harian':'Daily','Minggu':'Week','Bulan':'Month','Tindak lanjut':'Follow-up','Laporan':'Report','Pengaturan':'Settings',
 '+ Catat aktivitas':'+ Log activity','Catat aktivitas':'Log activity','Ubah catatan':'Edit entry','Ubah':'Edit','Buka':'Open','Hapus':'Delete','Simpan':'Save','Batal':'Cancel','Tutup':'Close',
 'Tanggal':'Date','Jenis aktivitas':'Activity type','Toko':'Store','Area / kota':'Area / city','Mulai':'Start','Selesai':'End','Jumlah peserta':'Participants','Topik atau materi':'Topic / material','Hasil dan temuan':'Results & findings','Batas tindak lanjut':'Follow-up due date','Kosongkan bila tidak ada':'Leave empty if none','Opsional':'Optional','Nama toko':'Store name','Pilih toko':'Choose store','Toko lain…':'Other store…',
@@ -595,7 +634,7 @@ function entryRow(e){
       e.topic?h('p',{class:'topic'},e.topic):null,
       e.result?h('p',{class:'res'},e.result):null,
       e.followup?fuBlock(e):null,evThumbs(e.evidence)),
-    h('button',{class:'btn ghost sm',type:'button',onclick:function(){openSheet(e.id)}},'Ubah'));
+    h('button',{class:'btn tint sm',type:'button','aria-label':'Edit aktivitas',onclick:function(){openSheet(e.id)}},'✎ Edit'));
 }
 
 /* ---------- tampilan: harian ---------- */
@@ -617,7 +656,7 @@ function vHarian(){
   var list=E().filter(function(e){return e.date===S.day}).sort(cmp);
   var st=stats(list),t=today(),root=h('div');
   var od=openFu().filter(function(e){return e.fuDue&&e.fuDue<t});
-  put(root,errNote(),demoNote(),weekStrip());
+  put(root,errNote(),demoNote(),clockEl(),weekStrip());
   if(od.length)put(root,h('div',{class:'note warn'},
     h('p',null,od.length+' tindak lanjut melewati batas waktu.'),
     h('button',{class:'btn sm',type:'button',onclick:function(){setTab('tindak')}},'Lihat')));
@@ -1128,7 +1167,7 @@ function openSheet(id,preset){
       delBtn));
   var overlay=h('div',{class:'overlay',onclick:function(ev){if(ev.target===overlay)closeSheet()}},
     h('div',{class:'sheet',role:'dialog','aria-modal':'true','aria-labelledby':'sheet-title'},
-      h('header',null,h('h2',{id:'sheet-title'},id?'Ubah catatan':'Catat aktivitas'),
+      h('header',null,h('h2',{id:'sheet-title'},id?'Edit aktivitas':'Catat aktivitas'),
         h('button',{class:'btn ghost sm',type:'button','aria-label':'Tutup',onclick:closeSheet},'✕')),
       form));
   $('sheetRoot').replaceChildren(overlay);
@@ -1329,8 +1368,8 @@ function renderTop(){
   var msg=!S.ready?'Memuat…':!has?'Tersimpan di peramban ini saja':k==='busy'?'Menyinkronkan…':k==='err'?'Gagal sinkron, data aman di perangkat'+(S.syncErr?' ('+S.syncErr+')':''):'Tersinkron ke server';
   s.className='sync'+(has&&k!=='err'?'':' warn');
   s.replaceChildren(h('i'),msg);
-  var br=document.querySelector('.brand');br.replaceChildren(h('small',null,'Catatan kunjungan toko'),T('Jurnal Trainer Lapangan'));
-  $('fab').textContent=T('+ Catat aktivitas');document.title=T('Jurnal Trainer Lapangan');
+  var br=document.querySelector('.brand');br.replaceChildren(h('small',null,'Catatan kunjungan toko'),T('Jurnal Trainer Executive'));
+  $('fab').textContent=T('+ Catat aktivitas');document.title=T('Jurnal Trainer Executive');
 }
 function renderNav(){
   var open=S.ready?openFu().length:0;
@@ -1355,6 +1394,14 @@ function setTab(t){
   render();
   window.scrollTo(0,0);
 }
+function clockEl(){var el=h('div',{class:'clock'},h('div',null,h('div',{class:'clk-t'}),h('div',{class:'clk-d'})),h('div',{class:'clk-z'}));fillClock(el);return el}
+function fillClock(el){
+  var n=new Date(),q=function(c){return el.querySelector(c)};
+  q('.clk-t').textContent=n.toLocaleTimeString(LOC,{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).replace(/\./g,':');
+  q('.clk-d').textContent=n.toLocaleDateString(LOC,{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  q('.clk-z').textContent=(Intl.DateTimeFormat().resolvedOptions().timeZone||'')+' · '+n.toLocaleTimeString('en-US',{timeZoneName:'short'}).split(' ').pop();
+}
+setInterval(function(){document.querySelectorAll('.clock').forEach(fillClock)},1000);
 document.addEventListener('focusout',function(){setTimeout(function(){if(S.dirty)refresh()},60)});
 document.addEventListener('keydown',function(ev){if(ev.key==='Escape'&&S.sheet)closeSheet()});
 $('fab').addEventListener('click',function(){openSheet(null,S.tab==='harian'?{date:S.day}:{date:today()})});
