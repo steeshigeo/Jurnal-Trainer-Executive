@@ -275,16 +275,22 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);
 .pill{background:var(--hl);border-radius:999px}.track{border-radius:99px}.fill{border-radius:99px;background:linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--accent) 60%,#fff))}
 .col .b{border-radius:10px 10px 4px 4px;background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 70%,#fff),var(--accent))}
 .evth img,.evt img,.evgal img{border-radius:14px}
-.clock{display:flex;align-items:center;justify-content:space-between;gap:10px 20px;flex-wrap:wrap;padding:18px 22px;border-radius:30px;margin-bottom:16px}
-.clk-t{font:700 2.6rem/1 var(--font-display);font-variant-numeric:tabular-nums;letter-spacing:-.03em}
-.clk-d{margin-top:6px;color:var(--ink-2);font-weight:500}.clk-z{font:600 .7rem var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);padding:6px 12px;border-radius:999px;background:var(--surface-2)}
 @media (prefers-reduced-transparency:reduce){:root{--glass:var(--bg);--glass-strong:var(--bg)}*{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}}
+.top{align-items:center}.tr{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.clock,.sync{padding:4px 11px;border-radius:999px;box-shadow:none;font-size:.66rem;line-height:1.4;white-space:nowrap}
+.clock{display:flex;align-items:baseline;gap:7px}
+.clk-t{font:700 .72rem var(--font-mono);font-variant-numeric:tabular-nums;letter-spacing:.03em}
+.clk-d{font:500 .66rem var(--font-mono);color:var(--ink-2)}
+.sync{gap:5px;max-width:min(100%,340px);overflow:hidden;text-overflow:ellipsis;font-weight:500}.sync i{width:6px;height:6px;flex:none}
+.entry{grid-template-columns:52px minmax(0,1fr);position:relative;padding-right:34px}
+.ebtn{position:absolute;top:12px;right:0;width:26px;height:26px;border-radius:50%;padding:0;display:grid;place-items:center;font-size:.8rem;line-height:1;color:var(--ink-2);background:var(--glass);border:1px solid var(--glass-brd);box-shadow:inset 0 1px 0 rgba(255,255,255,.45);transition:color .2s,background .2s,transform .2s}
+.ebtn:hover{color:var(--accent);background:var(--glass-hi)}.ebtn:active{transform:scale(.92)}
 </style>
 
 <div class="app">
   <header class="top">
     <div class="brand"><small>Catatan kunjungan toko</small>Jurnal Trainer Executive</div>
-    <div class="sync" id="sync"><i></i>Memuat…</div>
+    <div class="tr"><div class="clock" id="clock"><span class="clk-t"></span><span class="clk-d"></span></div><div class="sync" id="sync"><i></i>Memuat…</div></div>
   </header>
   <nav class="tabs" id="tabs" role="tablist" aria-label="Tampilan"></nav>
   <main id="view"></main>
@@ -355,7 +361,7 @@ var EN={'Catatan kunjungan toko':'Store visit log','Jurnal Trainer Executive':'E
 'Ini contoh tampilan. Data di bawah hanya ilustrasi dan tidak disimpan. Catat aktivitas pertama Anda dan contoh ini hilang sendiri.':'This is a sample view. The data below is illustrative and is not saved. Log your first activity and it disappears.',
 'Daftar toko':'Store list','Tambah toko':'Add stores','Tambahkan ke daftar':'Add to list','Tambah':'Add','Kosongkan daftar toko':'Clear store list','Ya, kosongkan':'Yes, clear','Identitas di laporan':'Report identity','Nama':'Name','Jabatan':'Role','Wilayah':'Region','Periode':'Period',
 'Tampilan':'Appearance','Bahasa':'Language','Otomatis (ikuti perangkat)':'Automatic (follow device)','Terang':'Light','Gelap':'Dark','Tampilan & bahasa':'Appearance & language','Layar penuh':'Fullscreen',
-'Server data (Google Sheet)':'Data server (Google Sheet)','Link server (Google Sheet)':'Server link (Google Sheet)','Kode akses (opsional)':'Access code (optional)','Tes koneksi & sinkronkan':'Test connection & sync','Isi link server dulu.':'Enter the server link first.','Terhubung':'Connected',
+'Server data (Google Sheet)':'Data server (Google Sheet)','Link server (Google Sheet)':'Server link (Google Sheet)','Kode akses (opsional)':'Access code (optional)','Tes koneksi & sinkronkan':'Test connection & sync','Folder Google Drive untuk evidence':'Google Drive folder for evidence','Folder Drive pribadi: bagikan folder itu ke akun pemilik script sebagai Editor. Subfolder per tanggal (dd-mm-yyyy) dibuat otomatis. Kosongkan untuk memakai folder bawaan.':'Personal Drive folder: share it with the script owner account as Editor. Date subfolders (dd-mm-yyyy) are created automatically. Leave empty to use the default folder.','Isi link server dulu.':'Enter the server link first.','Terhubung':'Connected',
 'Tempel URL Web App Google Apps Script (lihat Code.gs). Semua catatan dan foto evidence disimpan ke Google Sheet kantor. Nama di Identitas dipakai sebagai pemilik data, jadi isi dulu.':'Paste the Google Apps Script Web App URL (see Code.gs). All entries and evidence photos are saved to the office Google Sheet. The name under Identity owns the data, so fill it in first.',
 'Tersimpan di peramban ini saja':'Saved in this browser only','Tersinkron ke server':'Synced to server','Menyinkronkan…':'Syncing…','Gagal sinkron, data aman di perangkat':'Sync failed, data is safe on this device',
 'Evidence (foto bukti)':'Evidence (photo proof)','Tambah evidence':'Add evidence','Foto dikompres otomatis':'Photos are compressed automatically','Hapus foto':'Delete photo','Evidence hari ini':'Evidence for this day','Evidence pada periode ini':'Evidence in this period',
@@ -415,7 +421,7 @@ var uid8=function(){return Date.now().toString(36)+Math.random().toString(36).sl
 /* ---------- penyimpanan: lokal dulu, server Google Sheet bila link diisi ---------- */
 var SRV=function(){return String(S.settings.server||'').trim()};
 function persist(){try{localStorage.setItem(LS+'entries',JSON.stringify(S.entries))}catch(e){toast('Penyimpanan perangkat penuh. Aktifkan server atau hapus foto lama.')}}
-function srvBody(p){return Object.assign({owner:S.settings.name||'',key:S.settings.key||''},p)}
+function srvBody(p){return Object.assign({owner:S.settings.name||'',key:S.settings.key||'',drive:S.settings.drive||''},p)}
 async function srv(p){
   if(!SRV())throw new Error('Link server kosong');
   var r=await fetch(SRV()+(SRV().indexOf('?')<0?'?':'&')+'p='+encodeURIComponent(JSON.stringify(srvBody(p))),{redirect:'follow'});
@@ -634,7 +640,7 @@ function entryRow(e){
       e.topic?h('p',{class:'topic'},e.topic):null,
       e.result?h('p',{class:'res'},e.result):null,
       e.followup?fuBlock(e):null,evThumbs(e.evidence)),
-    h('button',{class:'btn tint sm',type:'button','aria-label':'Edit aktivitas',onclick:function(){openSheet(e.id)}},'✎ Edit'));
+    h('button',{class:'ebtn',type:'button',title:T('Edit aktivitas'),'aria-label':'Edit aktivitas',onclick:function(){openSheet(e.id)}},'✎'));
 }
 
 /* ---------- tampilan: harian ---------- */
@@ -656,7 +662,7 @@ function vHarian(){
   var list=E().filter(function(e){return e.date===S.day}).sort(cmp);
   var st=stats(list),t=today(),root=h('div');
   var od=openFu().filter(function(e){return e.fuDue&&e.fuDue<t});
-  put(root,errNote(),demoNote(),clockEl(),weekStrip());
+  put(root,errNote(),demoNote(),weekStrip());
   if(od.length)put(root,h('div',{class:'note warn'},
     h('p',null,od.length+' tindak lanjut melewati batas waktu.'),
     h('button',{class:'btn sm',type:'button',onclick:function(){setTab('tindak')}},'Lihat')));
@@ -1320,7 +1326,8 @@ function vPengaturan(){
     h('label',{style:'display:block;margin-top:16px'},'Bahasa'),seg([['id','Bahasa Indonesia'],['en','English']],cfg.lang||'id',function(v){cfg.lang=v;applyPrefs();saveSettings();render()}));
   var srvPanel=h('div',{class:'panel pad'},
     h('p',{class:'help'},'Tempel URL Web App Google Apps Script (lihat Code.gs). Semua catatan dan foto evidence disimpan ke Google Sheet kantor. Nama di Identitas dipakai sebagai pemilik data, jadi isi dulu.'),
-    h('div',{class:'grid'},idField('Link server (Google Sheet)','s-srv','server','https://script.google.com/macros/s/…/exec','full'),idField('Kode akses (opsional)','s-key','key','','full')),
+    h('div',{class:'grid'},idField('Link server (Google Sheet)','s-srv','server','https://script.google.com/macros/s/…/exec','full'),idField('Kode akses (opsional)','s-key','key','','full'),idField('Folder Google Drive untuk evidence','s-drv','drive','https://drive.google.com/drive/folders/…','full')),
+    h('p',{class:'help',style:'margin-top:10px'},'Folder Drive pribadi: bagikan folder itu ke akun pemilik script sebagai Editor. Subfolder per tanggal (dd-mm-yyyy) dibuat otomatis. Kosongkan untuk memakai folder bawaan.'),
     h('div',{class:'row',style:'margin-top:12px'},h('button',{class:'btn primary',type:'button',onclick:async function(){
       if(!SRV()){toast('Isi link server dulu.');return}
       try{await srv({action:'ping'});toast('Terhubung');pull()}catch(x){toast('Gagal terhubung: '+srvHint(x))}}},'Tes koneksi & sinkronkan')));
@@ -1367,7 +1374,7 @@ function renderTop(){
   var s=$('sync'),has=!!SRV(),k=S.sync;
   var msg=!S.ready?'Memuat…':!has?'Tersimpan di peramban ini saja':k==='busy'?'Menyinkronkan…':k==='err'?'Gagal sinkron, data aman di perangkat'+(S.syncErr?' ('+S.syncErr+')':''):'Tersinkron ke server';
   s.className='sync'+(has&&k!=='err'?'':' warn');
-  s.replaceChildren(h('i'),msg);
+  s.replaceChildren(h('i'),T(msg));s.title=T(msg);
   var br=document.querySelector('.brand');br.replaceChildren(h('small',null,'Catatan kunjungan toko'),T('Jurnal Trainer Executive'));
   $('fab').textContent=T('+ Catat aktivitas');document.title=T('Jurnal Trainer Executive');
 }
@@ -1394,14 +1401,14 @@ function setTab(t){
   render();
   window.scrollTo(0,0);
 }
-function clockEl(){var el=h('div',{class:'clock'},h('div',null,h('div',{class:'clk-t'}),h('div',{class:'clk-d'})),h('div',{class:'clk-z'}));fillClock(el);return el}
 function fillClock(el){
-  var n=new Date(),q=function(c){return el.querySelector(c)};
-  q('.clk-t').textContent=n.toLocaleTimeString(LOC,{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).replace(/\./g,':');
-  q('.clk-d').textContent=n.toLocaleDateString(LOC,{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  q('.clk-z').textContent=(Intl.DateTimeFormat().resolvedOptions().timeZone||'')+' · '+n.toLocaleTimeString('en-US',{timeZoneName:'short'}).split(' ').pop();
+  var n=new Date();
+  el.querySelector('.clk-t').textContent=n.toLocaleTimeString(LOC,{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).replace(/\./g,':');
+  el.querySelector('.clk-d').textContent=n.toLocaleDateString(LOC,{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  el.title=(Intl.DateTimeFormat().resolvedOptions().timeZone||'')+' · '+n.toLocaleTimeString('en-US',{timeZoneName:'short'}).split(' ').pop();
 }
 setInterval(function(){document.querySelectorAll('.clock').forEach(fillClock)},1000);
+document.querySelectorAll('.clock').forEach(fillClock);
 document.addEventListener('focusout',function(){setTimeout(function(){if(S.dirty)refresh()},60)});
 document.addEventListener('keydown',function(ev){if(ev.key==='Escape'&&S.sheet)closeSheet()});
 $('fab').addEventListener('click',function(){openSheet(null,S.tab==='harian'?{date:S.day}:{date:today()})});
